@@ -1,0 +1,30 @@
+version: '3.8'
+services:
+  image-processor:
+    image: image-processor:0.0.1-SNAPSHOT
+    environment:
+      - CLOUDINARY_API_KEY=${CLOUDINARY_API_KEY}
+      - CLOUDINARY_API_SECRET=${CLOUDINARY_API_SECRET}
+      - CLOUDINARY_CLOUD_NAME=${CLOUDINARY_CLOUD_NAME}
+      - CLOUDINARY_FOLDER=${CLOUDINARY_FOLDER}
+      - DB_HOST=${DB_HOST}
+      - DB_NAME=${DB_NAME}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_PORT=${DB_PORT}
+      - DB_USERNAME=${DB_USERNAME}
+    ports:
+      - '8083:8080'
+    depends_on:
+      - postgres
+  postgres:
+    image: postgres:15.4
+    restart: always
+    environment:
+      - POSTGRES_DB=${DB_NAME}
+      - POSTGRES_USER=${DB_USERNAME}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+    volumes:
+      - db:/var/lib/postgresql/data
+volumes:
+  db:
+    driver: local
